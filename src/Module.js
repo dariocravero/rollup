@@ -62,6 +62,9 @@ export default class Module {
 		this.analyse();
 
 		this.strongDependencies = [];
+
+		//
+		this._parse = bundle.parse || parse;
 	}
 
 	addExport ( statement ) {
@@ -307,7 +310,7 @@ export default class Module {
 			// Try to extract a list of top-level statements/declarations. If
 			// the parse fails, attach file info and abort
 			try {
-				this.ast = parse( this.code, assign({
+				this.ast = this._parse( this.code, assign({
 					ecmaVersion: 6,
 					sourceType: 'module',
 					onComment: ( block, text, start, end ) => this.comments.push({ block, text, start, end }),
